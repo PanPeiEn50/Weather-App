@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Search from './components/Search';
 import Temperature from './components/Temperature';
 import FeelsLike from './components/FeelsLike';
@@ -19,6 +19,10 @@ const App = () => {
     const data = await response.json();
     setWeather(data);
   };
+
+  useEffect(() => {
+    fetchWeather('Taipei');
+  }, []);
 
   return (
     <div className="App">
