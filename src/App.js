@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import Search from './components/Search';
-import Temperature from './components/Temperature';
+import MaxTemperature from './components/MaxTemperature';
 import FeelsLike from './components/FeelsLike';
 import Humidity from './components/Humidity';
-import TempRange from './components/TempRange';
+import MinTemperature from './components/MinTemperature';
 import Sunset from './components/Sunset';
 import Visibility from './components/Visibility';
 import Description from './components/Description';
@@ -15,13 +15,21 @@ const App = () => {
 
   const fetchWeather = async (city) => {
     const apiKey = 'd6abd7f801b10209718758ef178d5408';
-    const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`);
-    const data = await response.json();
-    setWeather(data);
+    try {
+      const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`);
+      if (!response.ok) {
+        throw new Error('City not found');
+      }
+      const data = await response.json();
+      setWeather(data);
+    } catch (error) {
+      alert(error.message);
+      setWeather(null);
+    }
   };
 
   useEffect(() => {
-    fetchWeather('Taipei');
+    fetchWeather('Taipei'); // Default city
   }, []);
 
   return (
@@ -35,13 +43,13 @@ const App = () => {
               <Description weather={weather} />
             </div>
             <div className="small-box">
-              <Temperature weather={weather} />
-            </div>
-            <div className="small-box">
               <FeelsLike weather={weather} />
             </div>
             <div className="small-box">
-              <TempRange weather={weather} />
+              <MinTemperature weather={weather} />
+            </div>
+            <div className="small-box">
+              <MaxTemperature weather={weather} />
             </div>
             <div className="small-box">
               <Humidity weather={weather} />

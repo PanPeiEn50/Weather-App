@@ -5,11 +5,15 @@ const Search = ({ fetchWeather }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (!city) {
+      alert('Please enter a city');
+      return;
+    }
     fetchWeather(city);
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} className="search-bar">
       <input
         type="text"
         value={city}
